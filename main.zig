@@ -26,17 +26,17 @@ pub fn try_iterate_zigimport() void {
     std.debug.print("field2 = {}\n", .{test_struct.field2});
 
     // describe the zig import zigtest
-    std.debug.print("zigtest type is {}\n", .{@typeName(zigtest)});
-    std.debug.print("zigtest typeInfo tag is {}\n", .{@tagName(@typeInfo(zigtest))});
+    // NOTE these cause compilation errors, even if marked comptime
+    //std.debug.print("zigtest type is {s}\n", .{@typeName(zigtest)});
+    //std.debug.print("zigtest typeInfo tag is {s}\n", .{@tagName(@typeInfo(zigtest))});
 
-    std.debug.print("zigtest type info {}\n", .{@typeInfo(zigtest)});
-
-    std.debug.print("zigtest decls {}\n", .{@typeInfo(zigtest).Struct.decls});
+    //std.debug.print("zigtest type info {s}\n", .{@typeInfo(zigtest)});
+    //std.debug.print("zigtest decls {s}\n", .{@typeInfo(zigtest).Struct.decls});
 
     // look through zig import and instantiate the struct without naming it directly
     inline for (@typeInfo(zigtest).Struct.decls) |decl| {
-        std.debug.print("decl name = {}\n", .{decl.name});
-        std.debug.print("decl tag = {}\n", .{@tagName(@typeInfo(@TypeOf(decl)))});
+        std.debug.print("decl name = {s}\n", .{decl.name});
+        std.debug.print("decl tag = {s}\n", .{@tagName(@typeInfo(@TypeOf(decl)))});
 
         const test_struct2 = decl.data.Type{ .field0 = 1, .field1 = 2, .field2 = 3 };
         std.debug.print("field0 = {}\n", .{test_struct2.field0});
@@ -55,12 +55,12 @@ pub fn try_iterate_cimport() void {
 
     // the cimport appears as a struct according to the typeinfo, although
     // its type is cimport
-    std.debug.print("ctest type is {}\n", .{@typeName(ctest)});
-    std.debug.print("ctest typeInfo tag is {}\n", .{@tagName(@typeInfo(ctest))});
+    std.debug.print("ctest type is {s}\n", .{@typeName(ctest)});
+    std.debug.print("ctest typeInfo tag is {s}\n", .{@tagName(@typeInfo(ctest))});
 
     // This causes a core dump with a TODO note:
-    //std.debug.print("ctest type info {}\n", .{@typeInfo(ctest)});
+    std.debug.print("ctest type info {}\n", .{@typeInfo(ctest)});
 
     // This also causes a core dump with a TODO note:
-    //std.debug.print("ctest decls {}\n", .{@typeInfo(ctest).Struct.decls});
+    std.debug.print("ctest decls {}\n", .{@typeInfo(ctest).Struct.decls});
 }
